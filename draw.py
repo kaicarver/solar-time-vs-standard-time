@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import jinja2
 import pycountry
@@ -32,13 +32,12 @@ COLORS = [
     '#1f4abf',
     ]
 
-
 def readFipsCodes():
     c = open("fips_codes.txt").readlines()
     ret = {}
     for d in c:
         d = d.split(' ', 1)
-        ret[d[0]] = d[1].strip().decode('utf-8')
+        ret[d[0]] = d[1].strip()
     return ret
 
 
@@ -140,7 +139,7 @@ def tzOffset(tz_name):
 
 
 def findTimezones():
-    print "Reading timezones..."
+    print("Reading timezones...")
     r = shapefile.Reader("./tz_world/tz_world.shp")
 
     timezones = dict()
@@ -234,13 +233,14 @@ def getTimezones():
             else:
                 filtered += 1
         timezones.append(timezone)
-    print "Shapes filtered out:", filtered
+        #print(timezone["offset"])
+    print("Shapes filtered out:", filtered)
     return timezones
 
 
 def getHours():
     hours = []
-    for x in xrange(-180, 181, 15):
+    for x in range(-180, 181, 15):
         line = []
         for y in range(-90, 91, 30):
             line.append((x + 7.5, y + 0.01))
@@ -253,7 +253,7 @@ def getHours():
 
 
 def getCountries():
-    print "Reading countries..."
+    print("Reading countries...")
     r = shapefile.Reader("./fips10c/fips10c.shp")
     fips = readFipsCodes()
     boundaries = []
@@ -270,7 +270,7 @@ def getCountries():
         name = fips.get(s.record[0], '')
         if name not in namesDone or len(biggest) > len(namesDone[name]):
             namesDone[name] = biggest
-    for name, b in namesDone.iteritems():
+    for name, b in namesDone.items():
         if name == '':
             continue
         name, size, pos, spacing = computeSizePositionAndSpacing(name, b)
@@ -287,7 +287,10 @@ def getCountries():
 
 
 def getCities():
-    print "Reading cities..."
+    # return empty for now because could not get the data
+    print("NOT reading cities because data unavailable...")
+    return []
+    print("Reading cities...")
     r = shapefile.Reader("./cities/cities.shp")
     cities = []
     for s in r.shapeRecords():
@@ -341,5 +344,7 @@ if __name__ == "__main__":
                              trim_blocks=True,
                              lstrip_blocks=True)
     template = env.get_template("template.svg")
-    with open("./output/base.svg", "w") as f:
-        f.write(template.render(getData()).encode("UTF-8"))
+    svgfile = "./output/base.svg"
+    with open(svgfile, "w") as f:
+        f.write(template.render(getData()))
+    print("Wrote " + svgfile + ".")

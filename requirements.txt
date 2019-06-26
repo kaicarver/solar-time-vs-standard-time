@@ -1,0 +1,7 @@
+certifi==2019.6.16
+Jinja2==2.10.1
+MarkupSafe==1.1.1
+pycountry==18.12.8
+pyshp==2.1.0
+pytz==2019.1
+wincertstore==0.2

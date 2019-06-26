@@ -50,11 +50,11 @@ def std_ty(y):
 
 
 def tx(xy):
-    return std_tx(xy[0])
+    return round(std_tx(xy[0]), 2)
 
 
 def ty(xy):
-    return std_ty(180 * 1.25 * log(tan(0.25 * pi + 0.4 * pi * xy[1] / 180.0)))
+    return round(std_ty(180 * 1.25 * log(tan(0.25 * pi + 0.4 * pi * xy[1] / 180.0))), 2)
 
 
 def drawPoint(p):
@@ -277,33 +277,34 @@ def getCountries():
         if name is not None and size > 0:
             names.append({
                 'name': name.split('\n'),
-                'spacing': spacing,
-                'size': size,
-                'x': pos[0],
-                'y': pos[1]
+                'spacing': round(spacing, 2),
+                'size': round(size, 2),
+                'x': round(pos[0], 2),
+                'y': round(pos[1], 2)
             })
     return {"names": names,
             "boundaries": boundaries}
 
 
 def getCities():
-    # return empty for now because could not get the data
-    print("NOT reading cities because data unavailable...")
-    return []
+    # # return empty for now because could not get the data
+    # print("NOT reading cities because data unavailable...")
+    # return []
     print("Reading cities...")
-    r = shapefile.Reader("./cities/cities.shp")
+    r = shapefile.Reader("./cities/World_Cities.shp")
     cities = []
     for s in r.shapeRecords():
-        inhabitants = s.record[2]
-        capital = s.record[3]
+        #print(s.record)
+        inhabitants = s.record[8]
+        capital = s.record[7]
         importance = 0
         override = CITIES_OVERRIDE.get(s.record[0], {})
         cities.append({
             "x": tx(s.shape.points[0]),
             "y": ty(s.shape.points[0]),
             "inhabitants": inhabitants,
-            "capital": capital == "Y",
-            "name": s.record[0],
+            "capital": capital.startswith("National"),
+            "name": s.record[2],
             "anchor": override.get('x_anchor', 'start'),
             "dy": 0
         })
@@ -312,6 +313,7 @@ def getCities():
             cities[-1]['dy'] += capital == "Y" and 6 or 4
         elif dy == 'bottom':
             cities[-1]['dy'] += capital == "Y" and 12 or 8
+        #print(cities[-1])
     return cities
 
 
@@ -347,4 +349,4 @@ if __name__ == "__main__":
     svgfile = "./output/base.svg"
     with open(svgfile, "w") as f:
         f.write(template.render(getData()))
-    print("Wrote " + svgfile + ".")
+    print("Wrote file: " + svgfile)

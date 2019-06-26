@@ -13,7 +13,7 @@
 
 <style type="text/css">
 text {
-  font-family: "Futura";
+  font-family: Futura, Arial;
 }
 
 .tz-path {
@@ -175,7 +175,7 @@ text.infobox {
   </text>
     {% endif %}
   {% else %}
-    {% if city.inhabitants >= 5000000 %}
+    {% if city.inhabitants|int >= 5000000 %}
   <circle class="city-noncapital" cx="{{ city.x }}" cy="{{ city.y }}" r="1.5" />
   <text class="city-noncapital" x="{{ city.x }}" y="{{ city.y + city.dy }}" style="text-anchor: {{ city.anchor }}">
     &#x00A0;&#x00A0;{{ city.name }}&#x00A0;&#x00A0;

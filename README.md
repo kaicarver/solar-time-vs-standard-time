@@ -9,8 +9,8 @@ See the discussion at <http://blog.poormansmath.net>, esp. <http://blog.poormans
 Update by Kai:
 -------------
 
-I wanted to use this to display a map showing what the date is the world.
-Thst is two zones: where it's yesterday/today and where it's today/tomorrow.
+I wanted to use this to display a map showing what the date is the world,
+that is two zones: where it's yesterday/today and where it's today/tomorrow.
 To get the basic display of time zones to work I had to make these changes:
 
 * the script is called init_data.sh
@@ -19,10 +19,11 @@ To get the basic display of time zones to work I had to make these changes:
 * worked around having no cities data in the draw.py script
 * added some header stuff to svg template so it displays in browser (but see problems)
 * requirements.txt lists the Python packages needed
+* found another file with city data and adapted draw program accordingly
 
 Problems to be solved:
 
-* the SVG file is way too detailed, very slow and bulky to use, the map is too detailed
+* the SVG file is way too detailed, very slow and bulky to use, the basic map outlines are too detailed for my purposes
 * the SVG file displays properly in Inkscape, but not in the browser, where pathclipped time zones don't display
 
 Instructions

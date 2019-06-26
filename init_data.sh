@@ -2,20 +2,20 @@
 
 mkdir fips10c
 pushd fips10c
-wget http://efele.net/maps/fips-10/map/fips10c.zip
+wget -N http://efele.net/maps/fips-10/map/fips10c.zip
 unzip -u fips10c.zip
 popd
 
 mkdir tz_world
 pushd tz_world
-wget http://efele.net/maps/tz/world/tz_world.zip
+wget -N http://efele.net/maps/tz/world/tz_world.zip
 unzip -u tz_world.zip
 mv world/* ./
 popd
 
 mkdir cities
 pushd cities
-wget https://opendata.arcgis.com/datasets/6996f03a1b364dbab4008d99380370ed_0.zip
+wget -N https://opendata.arcgis.com/datasets/6996f03a1b364dbab4008d99380370ed_0.zip
 unzip -u *.zip
 popd
 

@@ -7,8 +7,8 @@
      xmlns:svg="http://www.w3.org/2000/svg"
      xmlns="http://www.w3.org/2000/svg"
      version="1.1"
-     width="{{ WIDTH }}"
-     height="{{ HEIGHT }}"
+     width="{{ WIDTH / 10 }}"
+     height="{{ HEIGHT / 10 }}"
      viewBox="0 0 {{ WIDTH }} {{ HEIGHT }}">
 
 <style type="text/css">
@@ -123,9 +123,16 @@ text.infobox {
 </g>
 
 {% for timezone in timezones %}
-<clipPath id="clippath-{{ timezone.offset }}"
-          clipPathUnits="userSpaceOnUse">
-  <g>
+{% if timezone.offsetPx != "uninhabited" %}
+  {% if timezone.offset <= 0 %}
+  {% set fill = "pink" %}
+  {% else %}
+  {% set fill = "green" %}
+  {% endif %}
+{% else %}
+{% set fill = "#f7f7f7;" %}
+{% endif %}
+  <g style="fill: {{fill}}" id="tz{{timezone.offset}}" class="timezone">
     {% for part in timezone.parts %}
     <path d="M {{ drawLine(part) }}" />
     {% endfor %}
@@ -133,30 +140,6 @@ text.infobox {
     <circle cx="{{ c[0] }}" cy="{{ c[1] }}" r="6" />
     {% endfor %}
   </g>
-</clipPath>
-{% if timezone.offsetPx != "uninhabited" %}
-<rect style="fill: url(#tzGrad);"
-      width="{{ WIDTH  / 24.0 * 7 }}"
-      height="{{ HEIGHT }}"
-      x="{{ timezone.offsetPx }}"
-      y="0"
-      clip-path="url(#clippath-{{ timezone.offset }})" />
-{% else %}
-<rect style="fill: #f7f7f7"
-      width="{{ WIDTH }}"
-      height="{{ HEIGHT }}"
-      x="0"
-      y="0"
-      clip-path="url(#clippath-{{ timezone.offsetPx }})" />
-{% endif %}
-{% if timezone.offset == 720 %}
-<rect style="fill: url(#tzGrad);"
-      width="{{ WIDTH  / 24.0 * 7 }}"
-      height="{{ HEIGHT }}"
-      x="{{ timezone.offsetPx - WIDTH * 24 / 24.0 }}"
-      y="0"
-      clip-path="url(#clippath-{{ timezone.offset }})" />
-{% endif %}
 {% endfor %}
 
 <g id="boundaries">
@@ -206,64 +189,17 @@ text.infobox {
 </g>
 
 <g id="infobox">
-  <linearGradient id="tzGradInfoBox">
-    <stop style="stop-color:{{ COLORS[1] }};" offset="0" />
-    <stop style="stop-color:{{ COLORS[2] }};" offset="0.25" />
-    <stop style="stop-color:{{ COLORS[3] }};" offset="0.5" />
-    <stop style="stop-color:{{ COLORS[4] }};" offset="0.75" />
-    <stop style="stop-color:{{ COLORS[5] }};" offset="1" />
-  </linearGradient>
-
   <rect x="{{ WIDTH / 22 }}"
         y="{{ 16 * HEIGHT / 22 - 120 }}"
         width="{{ WIDTH / 24 * 4 + 100 }}"
-        height="{{ 8 * HEIGHT / 10 / 10 }}"
+        height="{{ 3 * HEIGHT / 10 / 10 }}"
         fill="#ffffff"
         stroke="#000000" />
-
   <text x="{{ WIDTH / 22 + 50 + WIDTH / 24 * 2 }}"
         y="{{16 * HEIGHT / 22 - 120 + 2 * HEIGHT / 10 / 10 }}"
         class="infobox"
         style="font-size: 60px; font-weight: bold;">
-    Miller Cylindrical Projection
-  </text>
-  <text x="{{ WIDTH / 22 + 50 + WIDTH / 24 * 2 }}"
-        y="{{16 * HEIGHT / 22 - 120 + 3.5 * HEIGHT / 10 / 10 }}"
-        class="infobox">
-    Difference between solar time and standard time (h)
-  </text>
-
-  <rect style="fill: url(#tzGradInfoBox);"
-        width="{{ WIDTH  / 24 * 4 }}"
-        height="{{ HEIGHT / 10 / 10 }}"
-        x="{{ WIDTH / 22 + 50 }}"
-        y="{{16 * HEIGHT / 22 - 120 + 5 * HEIGHT / 10 / 10 }}"
-        stroke="#000000" />
-
-  <text x="{{ WIDTH / 22 + 50}}"
-        y="{{16 * HEIGHT / 22 - 120 + 7 * HEIGHT / 10 / 10 }}"
-        class="infobox">
-    -2
-  </text>
-  <text x="{{ WIDTH / 22 + 50 + WIDTH / 24 * 1 }}"
-        y="{{16 * HEIGHT / 22 - 120 + 7 * HEIGHT / 10 / 10 }}"
-        class="infobox">
-    -1
-  </text>
-  <text x="{{ WIDTH / 22 + 50 + WIDTH / 24 * 2 }}"
-        y="{{16 * HEIGHT / 22 - 120 + 7 * HEIGHT / 10 / 10 }}"
-        class="infobox">
-    0
-  </text>
-  <text x="{{ WIDTH / 22 + 50 + WIDTH / 24 * 3 }}"
-        y="{{16 * HEIGHT / 22 - 120 + 7 * HEIGHT / 10 / 10 }}"
-        class="infobox">
-    1
-  </text>
-  <text x="{{ WIDTH / 22 + 50 + WIDTH / 24 * 4 }}"
-        y="{{16 * HEIGHT / 22 - 120 + 7 * HEIGHT / 10 / 10 }}"
-        class="infobox">
-    2
+    Time Zones
   </text>
 </g>
 

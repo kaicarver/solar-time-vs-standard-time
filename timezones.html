@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Time Zones</title>
+    <style>
+      td {
+        vertical-align: top;
+        font-family: Futura, Arial;
+        font-size: 1.1vw;
+        font-weight: bold;
+      }
+      #svgmap { width: 90vw; }
+    </style>
+    <script>
+      window.addEventListener("load", function() {
+        var svgmap = document.getElementById('svgmap');
+        zones = [...svgmap.contentDocument.querySelectorAll('.timezone')];
+        zones.sort((a,b) => a.id.localeCompare(b.id));
+        items = [];
+        for (let z of zones) {
+          console.log(z);
+          if (z.id !== 'tzuninhabited')
+            items.push(Number(z.id.replace(/tz/, '')) / 60);
+        }
+        items.sort((a,b) => a - b );
+        document.getElementById('list').innerHTML =
+          items.map(x => '<div class="tzlabel" id="tz'+(x*60)+'">'+x+'</div>').join("\n");
+        for (el of [...document.querySelectorAll('.tzlabel')]) {
+          el.addEventListener('mouseenter', (e) => {
+            e.currentTarget.style.backgroundColor = 'red';
+            document.getElementById('svgmap').contentDocument.getElementById(e.currentTarget.id).style.fill = 'red';
+          });
+          el.addEventListener('mouseleave', (e) => {
+            e.currentTarget.style.backgroundColor = 'yellow';
+            document.getElementById('svgmap').contentDocument.getElementById(e.currentTarget.id).style.fill = 'yellow';
+          });
+        }
+      });      
+    </script>
+  </head>
+  <body>
+    <table>
+      <tr>
+        <td>
+          <object id="svgmap" data="output/base.svg" type="image/svg+xml"></object>
+        </td>
+        <td>
+          <span id="list">Loading map...</span>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
+

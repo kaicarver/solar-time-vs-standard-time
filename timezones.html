@@ -7,17 +7,22 @@
       td {
         vertical-align: top;
         font-family: Futura, Arial;
-        font-size: 1.1vw;
+        font-size: 1vw;
         font-weight: bold;
+        padding-left: 1vw; 
       }
-      #svgmap { width: 90vw; }
+      .tzlabel { margin-left: 1vw; font-family: }
+      #cropmap { height: 90vh; overflow: hidden; }
+      #svgmap { height: 120vh; margin-top: -5vh; margin-bottom: -35vh;  }
     </style>
     <script>
+      // TODO: mouseover actions on zones too, not just on zone labels
+      // TODO: zoom into map to see detail of a zone
       window.addEventListener("load", function() {
         var svgmap = document.getElementById('svgmap');
-        zones = [...svgmap.contentDocument.querySelectorAll('.timezone')];
+        var zones = [...svgmap.contentDocument.querySelectorAll('.timezone')];
         zones.sort((a,b) => a.id.localeCompare(b.id));
-        items = [];
+        var items = [];
         for (let z of zones) {
           console.log(z);
           if (z.id !== 'tzuninhabited')
@@ -25,15 +30,30 @@
         }
         items.sort((a,b) => a - b );
         document.getElementById('list').innerHTML =
-          items.map(x => '<div class="tzlabel" id="tz'+(x*60)+'">'+x+'</div>').join("\n");
-        for (el of [...document.querySelectorAll('.tzlabel')]) {
+          items.map(x => '<div class="tzlabel" id="tz'+(x*60)+'">'+(x>0?'+'+x:x)+'</div>').join("\n");
+        for (el of document.querySelectorAll('.tzlabel')) {
+          let z = document.getElementById('svgmap').contentDocument.getElementById(el.id);
+          // link label and time zone to each other
+          el.tz = z;
+          z.tzlabel = el;
+          function highlight(tz, tzlabel, color) {
+            tz.style.fill = color;
+            tzlabel.style.backgroundColor = color;
+          }
           el.addEventListener('mouseenter', (e) => {
-            e.currentTarget.style.backgroundColor = 'red';
-            document.getElementById('svgmap').contentDocument.getElementById(e.currentTarget.id).style.fill = 'red';
+            highlight(e.currentTarget.tz, e.currentTarget, 'red')
+          });
+          z.addEventListener('mouseenter', (e) => {
+            highlight(e.currentTarget, e.currentTarget.tzlabel, 'red')
+          });
+          z.addEventListener('mousemove', (e) => {
+            highlight(e.currentTarget, e.currentTarget.tzlabel, 'red')
           });
           el.addEventListener('mouseleave', (e) => {
-            e.currentTarget.style.backgroundColor = 'yellow';
-            document.getElementById('svgmap').contentDocument.getElementById(e.currentTarget.id).style.fill = 'yellow';
+            highlight(e.currentTarget.tz, e.currentTarget, 'yellow')
+          });
+          z.addEventListener('mouseleave', (e) => {
+            highlight(e.currentTarget, e.currentTarget.tzlabel, 'yellow')
           });
         }
       });      
@@ -43,7 +63,9 @@
     <table>
       <tr>
         <td>
-          <object id="svgmap" data="output/base.svg" type="image/svg+xml"></object>
+          <div id="cropmap">
+            <object id="svgmap" data="output/base.svg" type="image/svg+xml"></object>
+          </div>
         </td>
         <td>
           <span id="list">Loading map...</span>

@@ -7,8 +7,8 @@
      xmlns:svg="http://www.w3.org/2000/svg"
      xmlns="http://www.w3.org/2000/svg"
      version="1.1"
-     width="{{ WIDTH / 10 }}"
-     height="{{ HEIGHT / 10 }}"
+     width="{{ WIDTH }}"
+     height="{{ HEIGHT }}"
      viewBox="0 0 {{ WIDTH }} {{ HEIGHT }}">
 
 <style type="text/css">
@@ -30,7 +30,7 @@ text {
 
 .hours-text {
   text-anchor: middle;
-  font-size: 48;
+  font-size: 60px;
   fill: #995522;
   stroke: #995522;
 }
@@ -53,7 +53,7 @@ text.country {
 
 text.city-capital {
   font-stretch: condensed;
-  font-size: 12;
+  font-size: 12px;
 }
 
 circle.city-capital {
@@ -62,7 +62,7 @@ circle.city-capital {
 
 text.city-noncapital {
   font-stretch: condensed;
-  font-size: 8;
+  font-size: 8px;
 }
 
 circle.city-noncapital {
@@ -74,7 +74,7 @@ circle.city-noncapital {
 text.tzLabel {
   text-anchor: middle;
   font-weight: bold;
-  font-size: 36;
+  font-size: 60px;
 }
 
 
@@ -111,11 +111,11 @@ text.infobox {
   {% for hour in hours %}
   <!--<path class="hours-path" d="M {{ drawLine(hour.line) }}" />-->
   {% if hour.hour == "-12" %}
-  <text class="hours-text" x="{{ hour.center + 55 }}" y="80">
+  <text class="hours-text" x="{{ hour.center + 55 }}" y="250">
   {% elif hour.hour == "+12"  %}
-  <text class="hours-text" x="{{ hour.center - 55 }}" y="80">
+  <text class="hours-text" x="{{ hour.center - 55 }}" y="250">
   {% else %}
-  <text class="hours-text" x="{{ hour.center }}" y="80">
+  <text class="hours-text" x="{{ hour.center }}" y="250">
   {% endif %}
     {{ hour.hour }}
   </text>
@@ -130,7 +130,7 @@ text.infobox {
   {% set fill = "green" %}
   {% endif %}
 {% else %}
-{% set fill = "#f7f7f7;" %}
+  {% set fill = "#f7f7f7;" %}
 {% endif %}
   <g style="fill: {{fill}}" id="tz{{timezone.offset}}" class="timezone">
     {% for part in timezone.parts %}

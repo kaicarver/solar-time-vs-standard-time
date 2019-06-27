@@ -9,9 +9,14 @@ See the discussion at <http://blog.poormansmath.net>, esp. <http://blog.poormans
 Update by Kai:
 -------------
 
-I wanted to use this to display a map showing what the date is the world,
+I wanted to use this to display a map showing what the date is all over the world,
 that is two zones: where it's yesterday/today and where it's today/tomorrow.
-To get the basic display of time zones to work I had to make these changes:
+
+Still a work in progress:
+
+<https://raw.githack.com/kaicarver/solar-time-vs-standard-time/master/timezones.html>
+
+To get this basic display of time zones to work I had to make these changes:
 
 * the script is called init_data.sh
 * cities did not download, so I executed the last lines of the script manually
